@@ -1,7 +1,13 @@
-function persistence(num, per = 0, bool = false) {
+function persistence(num, per = 0) {
+  if (num < 10) {
+    return per
+  } else {
+   per++
    let product = num.toString().split('').map(i => parseInt(i)).reduce((acc, val) => acc * val)
-   return (product < 10) ? per + (bool=== false ? 0 : 1) : persistence(product, per + 1, true)
+   return (product < 10) ? per : persistence(product, per)
+ }
 }
 
-console.log(persistence(4))
-console.log(persistence(999))
+console.log(persistence(7))
+console.log(persistence(14))
+console.log(persistence(700))
