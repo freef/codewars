@@ -1,54 +1,54 @@
 function roman(num) {
-let arr = num.toString().split('').map((i, index) => parseInt(i)).reverse().map((i, index) => i * Math.pow(10, index)).reverse()
-let out = arr.map((i)=> {
+// let arr = num.toString().split('').map((num, index) => parseInt(num)).reverse().map((num, index) => num * Math.pow(10, index)).reverse()
+// let out = arr.map((num)=> {
   let str = ''
-  while (i > 0) {
-     if (i >= 1000) {
+  while (num > 0) {
+     if ( num >= 1000) {
       str += 'M'
-      i=-1000
-    } else if (i === 900) {
-      str += 'DM'
-      i -= 900
-    } else if (i>= 500) {
+      num -= 1000
+      console.log(num)
+    } else if (num >= 900) {
+      str += 'CM'
+      num -= 900
+    } else if (num>= 500) {
       str += 'D'
-      i -= 500
-    } else if (i === 400) {
+      num -= 500
+    } else if (num >= 400) {
       str += 'CD'
-      i -=400
-    } else if (i >= 100) {
+      num -=400
+    } else if (num >= 100) {
       str += 'C'
-      i-= 100
-    } else if (i === 90) {
+      num-= 100
+    } else if (num >= 90) {
       str += 'XC'
-      i -= 90
-    } else if (i >= 50) {
+      num -= 90
+    } else if (num >= 50) {
       str += 'L'
-      i -= 50
-    } else if (i === 40) {
+      num -= 50
+    } else if (num >= 40) {
       str += 'XL'
-      i -= 40
-    } else if (i >= 10) {
+      num -= 40
+    } else if (num >= 10) {
       str += 'X'
-      i -= 10
-    } else if (i === 9) {
+      num -= 10
+    } else if (num >= 9) {
       str += 'IX'
-      i -= 9
-    } else if (i >= 5) {
+      num -= 9
+    } else if (num >= 5) {
       str += 'V'
-      i -=5
-    } else if (i === 4) {
+      num -=5
+    } else if (num >= 4) {
       str += 'IV'
-      i-= 5
-    } else if (i < 4) {
+      num-= 5
+    } else if (num < 4) {
       str += 'I'
-      i -= 1
-    } else { return 'error'}
+      num -= 1
+    }
 }
-return str })
-return out.join('')
-}
+return str }
 
-console.log(roman(472))
+
+console.log(roman(2472))
 
 // Modern Roman numerals are written by expressing each digit separately starting with the left most digit
 // skipping any digit with a value of zero.
