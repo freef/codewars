@@ -5,6 +5,8 @@ const input = process.argv[2]
 const addOn = process.argv[3]
 
 const hexEncodeFromFile = (input = false, append = false) => {
+
+
     // create endocer function
     const appendFile = append ? fs.appendFile : fs.writeFile
     const hexEncoder = (stringInt) => {
@@ -25,6 +27,16 @@ const hexEncodeFromFile = (input = false, append = false) => {
         return (adjusted - 8192)
     }
 
+    const isCommand = (hex) => {
+        const commands = {
+            CLR: 'F0',
+            PEN: '80',
+            CO: 'A0',
+            MV: 'C0'
+        }
+        return Object.keys(commands).find(key => commands[key]=== hex)
+    }
+
     // determine data type and read/write files
     if(input==='enc') {
         fs.promises.readFile('./InputData.txt', 'utf8')
@@ -37,12 +49,23 @@ const hexEncodeFromFile = (input = false, append = false) => {
 
     } else if( input==='dec') {
         fs.promises.readFile('./InputData.txt', 'utf8')
-            .then(data => (data.split(' ').map(value => {
-                const fixedVal = value.trim()
-                const hexRegex = /^[0-9a-fA-F]+$/
-                if (hexRegex.test(fixedVal) && fixedVal.length === 4){
-                    return hexDecoder(fixedVal.slice(0,2),fixedVal.slice(2,4))
-                } else {return 'ERROR'}
+            .then(data => {
+                const fixedData = data.trim()
+                let dataArray = []
+                for (let i =0; i < fixedData.length; i ++) {
+                    const bit = isCommand(fixedData.substring(i,i+2))
+                    console.log(fixedData.substring(i, i+2))
+                    console.log(bit)
+                    bit ? dataArray.push(bit) : dataArray.push(fixedData.substring(i, i+4))
+                    bit ? i += 1 : i += 3
+                }
+                return dataArray
+            })
+            .then(data => (data.map(val => {
+                return val.length === 4 ? hexDecoder(val.slice(0,2),val.slice(2,4)) : val
+                // const hexRegex = /^[0-9a-fA-F]+$/
+                // if (hexRegex.test(fixedVal) && fixedVal.length === 2){
+                // } else {return 'ERROR'}
             })))
             .then(data => appendFile('ConvertedData.txt', (data.join(' ') + ' '), (err) => {
                 if (err) throw err
