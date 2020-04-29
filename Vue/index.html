@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>test</title>
+</head>
+
+<body>
+  <div id='root'>
+    <input type='text' id='input' v-model='message'>
+    <p> input value is {{ message }}</p>
+    <ul>
+      <li v-for='platypus in names' v-text='platypus'><em>!</em></li>
+      <task-item>Silly</task-item>
+      <task-item>Sally</task-item>
+      <task-item>Solly</task-item>
+    </ul>
+    <input type='text' v-model='newName'>
+    <button :disabled="newName === ''" :class='title' @click='addName'>Add Name</button>
+    <button :class="isYes ? 'yes' : 'no'" @click='toggleYes'>Toggle</button>
+    <p>{{ reversedInput }}</p>
+    <h2> to do</h2>
+    <h3> incomplete</h3>
+    <ul>
+      <div v-for='(task, index) in incomplete'><li v-text='task.item'></li><button v-text='"complete"' @click='()=>toggleComplete(index, "incomplete")'></button></div>
+    </ul>
+    <h3>complete</h3>
+    <ul>
+      <div v-for='(task, index) in complete'><li v-text='task.item'></li><button v-text='"incomplete"' @click='()=>toggleComplete(index, "complete")'></button></div>
+    </ul>
+    <input type='text' id='todo' v-model='newToDo'>
+    <button @click='addToDo' :disabled="newToDo === ''" > Add Item</button>
+  </div>
+  <style>
+    .whaaaat {
+      border-radius: 1rem;
+      font-size: 1.25rem;
+      background-color: lightblue;
+    }
+
+    .yes {
+      border-radius: 1rem;
+      font-size: 1.25rem;
+      background-color: deeppink;
+    }
+
+    .no {
+      border-radius: 1rem;
+      font-size: 1.25rem;
+      background-color: lightyellow;
+    }
+  </style>
+  <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#root',
+      data: {
+        isYes: true,
+        newName: '',
+        message: "hello world",
+        names: ['joe', 'mary', 'jack'],
+        title: "whaaaat",
+        tasks: [{
+            item: 'take out trash',
+            complete: false
+          },
+          {
+            item: 'go to store',
+            complete: false
+          },
+          {
+            item: 'go to sleep',
+            complete: true
+          }
+        ],
+        newToDo: ''
+      },
+      methods: {
+        addToDo() {
+          this.tasks.push({item: this.newToDo, complete: false})
+        },
+        addName() {
+          this.names.push(this.newName)
+          this.newName = ''
+        },
+        toggleYes() {
+          this.isYes = !this.isYes
+        },
+        toggleComplete(index, status) {
+          return this[status][index].complete = ! this[status][index].complete
+        }
+      },
+      computed: {
+        reversedInput() {
+          return this.message.split('').reverse().join('')
+        },
+        incomplete() {
+          return this.tasks.filter(task => !task.complete)
+        },
+        complete() {
+          return this.tasks.filter(task => task.complete)
+        }
+      }
+    })
+  </script>
+  <script src='./task.js'></script>
+</body>
+
+</html>
